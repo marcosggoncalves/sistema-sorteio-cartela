@@ -1,0 +1,18 @@
+{
+    "name": "vendor/cooper-test",
+    "description": "Teste Dev Cooper Card",
+    "autoload": {
+        "psr-4": {
+            "CooperTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcos Gonçalves",
+            "email": "marcos.ggoncalves.pr@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^4.3"
+    }
+}

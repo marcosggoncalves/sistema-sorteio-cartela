@@ -1,0 +1,60 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.cartela {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    padding: 5px;
+}
+
+.cartela-numero {
+    background-color: #287e4c;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 1rem;
+    cursor: pointer; 
+    transition: background-color 0.3s;
+}
+
+.cartela-numero.selecionado {
+    background-color: #51c96d;
+}
+
+.btn{
+    background-color: #287e4c;
+    color: white;
+}
+
+.btn:hover{
+    background-color: #156929;
+    color: white;
+}
+
+.titulo h1{
+    font-size: 1.2rem;
+    line-height: 2rem;
+    font-weight: bold;
+}
+
+#numeros_sorteados{
+    display: none;
+}
+
+.table .boa{
+    width: 1px;
+    height: 20px;
+    text-align: center;
+    color: rgb(115, 190, 115);
+}
+
+.table .media{
+    width: 10px;
+    height: 20px;
+    text-align: center;
+    color: rgb(165, 165, 0);;
+}
