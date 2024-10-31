@@ -14,9 +14,10 @@ class Database
     private function __construct()
     {
         $params = sprintf(
-            "mysql:host=%s;dbname=%s;charset=utf8mb4",
+            "mysql:host=%s;dbname=%s;charset=utf8mb4;port=%s",
             $_ENV['DB_HOST'],
-            $_ENV['DB_DATABASE']
+            $_ENV['DB_DATABASE'],
+            $_ENV['DB_PORT'] 
         );
 
         try {
