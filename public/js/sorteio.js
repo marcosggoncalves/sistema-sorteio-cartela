@@ -6,12 +6,12 @@ const criarTabelaRanking = (data) => {
     table.innerHTML = '';
 
     data.forEach((apostador, index) => {
-        const tr = document.createElement('tr'); 
+        const tr = document.createElement('tr');
         let posicao = index + 1;
 
         const tdPosicao = document.createElement('td');
         tdPosicao.setAttribute('class', posicao <= 3 ? 'table boa' : 'table media');
-        const tdPosicaoTexto = document.createTextNode(`${posicao}º`); 
+        const tdPosicaoTexto = document.createTextNode(`${posicao}º`);
         tdPosicao.appendChild(tdPosicaoTexto);
 
         const tdNome = document.createElement('td');
@@ -33,32 +33,32 @@ const criarTabelaRanking = (data) => {
         const tdNumerosAcertosTexto = document.createTextNode(apostador.numeros_acertos);
         tdNumerosAcertos.appendChild(tdNumerosAcertosTexto);
 
-        tr.appendChild(tdPosicao); 
+        tr.appendChild(tdPosicao);
         tr.appendChild(tdNome);
-        tr.appendChild(tdNumeros); 
-        tr.appendChild(tdNumerosAcertos); 
+        tr.appendChild(tdNumeros);
+        tr.appendChild(tdNumerosAcertos);
         tr.appendChild(tdQtdAcertos);
 
         table.appendChild(tr);
     });
 }
 
-const criarTabelaResultadoSorteio =  (data) => {
+const criarTabelaResultadoSorteio = (data) => {
     const table = document.getElementById('resultado');
 
-    if(data && data.length > 0){
+    if (data && data.length > 0) {
         tabelaResultados.style.display = 'block';
     }
 
     table.innerHTML = '';
 
     data.forEach((apostador) => {
-        const tr = document.createElement('tr'); 
- 
+        const tr = document.createElement('tr');
+
         const tdNome = document.createElement('td');
         const tdNomeTexto = document.createTextNode(apostador.apostador);
         tdNome.appendChild(tdNomeTexto);
- 
+
         const tdNumeros = document.createElement('td');
         tdNumeros.setAttribute('class', 'text-center');
         const tdNumerosTexto = document.createTextNode(apostador.numeros_escolhidos);
@@ -74,8 +74,8 @@ const criarTabelaResultadoSorteio =  (data) => {
         tdMensagem.appendChild(tdMensagemTexto);
 
         tr.appendChild(tdNome);
-        tr.appendChild(tdNumeros); 
-        tr.appendChild(tdNumerosAcertos); 
+        tr.appendChild(tdNumeros);
+        tr.appendChild(tdNumerosAcertos);
         tr.appendChild(tdMensagem);
 
         table.appendChild(tr);
@@ -83,7 +83,7 @@ const criarTabelaResultadoSorteio =  (data) => {
 }
 
 const mostrarResultadoSorteioNumeros = (reultados) => {
-    const {resultado, resultado_ordenado} = reultados;
+    const { resultado, resultado_ordenado } = reultados;
 
     let div = document.getElementById('numeros_sorteados');
     div.style.display = 'block';
@@ -95,7 +95,7 @@ const mostrarResultadoSorteioNumeros = (reultados) => {
         semOrdenacao.innerHTML += `<div class='cartela-numero'>${numero}</div>`;
     });
 
-    let  ordenado = document.getElementById('numeros_ordenado');
+    let ordenado = document.getElementById('numeros_ordenado');
     ordenado.innerHTML = '';
 
     resultado_ordenado.forEach(numero => {
@@ -104,15 +104,13 @@ const mostrarResultadoSorteioNumeros = (reultados) => {
 }
 
 const carregarRankigApostadores = () => {
-    $(document).ready(function () {
-        $.ajax({
-            url: getHost() + '/ranking',
-            type: 'GET',
-            success: function (data) {
-                criarTabelaRanking(data)
-            },
-            error: function (data) { },
-        });
+    $.ajax({
+        url: getHost() + '/ranking',
+        type: 'GET',
+        success: function (data) {
+            criarTabelaRanking(data)
+        },
+        error: function (data) { },
     });
 }
 
@@ -120,10 +118,10 @@ $(document).ready(function () {
     $('#sortear').on('submit', function (event) {
         event.preventDefault();
 
-        const nome = document.getElementById('nome').value;
-        const data = document.getElementById('data').value;
-        const inicial = document.getElementById('inicial').value;
-        const final = document.getElementById('final').value;
+        const nome = $('nome').val();
+        const data = $('data').val();
+        const inicial = $('inicial').val();
+        const final = $('final').val();
 
         const body = {
             nome: nome,
@@ -137,7 +135,7 @@ $(document).ready(function () {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(body),
-            success:  (response) => {
+            success: (response) => {
                 const { numerosSorteados, resultados } = response
 
                 mostrarResultadoSorteioNumeros(numerosSorteados);
@@ -147,11 +145,7 @@ $(document).ready(function () {
             }, error: (data) => {
                 const erros = JSON.parse(data.responseText);
 
-                if (erros && erros.errors) {
-                    return mostrarMensagem(erros.errors);
-                }
-
-                mostrarMensagem([erros.mensagem]);
+                mostrarMensagem(erros && erros.errors ? erros.errors : [erros.mensagem],  'block', 'danger');
             }
         });
     });
@@ -164,4 +158,4 @@ const setup = () => {
 }
 
 /// Execute 
-setup();
+$(document).ready(setup);

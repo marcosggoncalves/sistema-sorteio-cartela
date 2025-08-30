@@ -21,22 +21,26 @@ const selecionarNUmerosCartela = (i, div) => {
     inputNumeros.value = numerosSelecionados.join(', ');
 }
 
+const numerosAleatoriosCartelas = (_numeros = []) =>{
+    _numeros.push((Math.floor(Math.random() * (maximo - minimo + 1)) + minimo));
+
+    if(_numeros.length < 6) return numerosAleatoriosCartelas(_numeros);
+
+    return _numeros;
+}
+
 const gerarNumerosCartelaAleatorio = () => {
     const div = document.getElementsByClassName('cartela-numero');
 
-    if(numerosSelecionados.length > 0){
-        numerosSelecionados.map(item=>{
+    if (numerosSelecionados.length > 0) {
+        numerosSelecionados.map(item => {
             div[item].classList.remove('selecionado');
         });
 
         numerosSelecionados = [];
     }
 
-    let numeros = [];
-
-    for (let index = 0; index < 6; index++) {
-        numeros[index] = (Math.floor(Math.random() * (maximo - minimo + 1)) + minimo);
-    }
+    let numeros = numerosAleatoriosCartelas();
 
     numeros.map(numero => selecionarNUmerosCartela(numero, div[numero]));
 }
@@ -139,15 +143,13 @@ const excluirApostador = (id) => {
 }
 
 const carregarApostadores = () => {
-    $(document).ready(function () {
-        $.ajax({
-            url: getHost() + '/listagem',
-            type: 'GET',
-            success: function (data) {
-                criarTabelaApostadores(data)
-            },
-            error: function (data) { },
-        });
+    $.ajax({
+        url: getHost() + '/listagem',
+        type: 'GET',
+        success: function (data) {
+            criarTabelaApostadores(data)
+        },
+        error: function (data) { },
     });
 }
 
@@ -155,9 +157,9 @@ $('#gerarNumeros').click(() => gerarNumerosCartelaAleatorio());
 
 $('#apostador').on('submit', function (event) {
     event.preventDefault();
-
-    let nome = document.getElementById('nome').value
-    let numeros = document.getElementById('numeros').value;
+    
+    let nome = $('#nome').val();
+    let numeros = $('#numeros').val();
 
     numeros = numeros.split(',').map(numero => numero.trim()).filter(numero => numero !== '')
 
@@ -179,11 +181,7 @@ $('#apostador').on('submit', function (event) {
         }, error: (data) => {
             const erros = JSON.parse(data.responseText);
 
-            if (erros && erros.errors) {
-                return mostrarMensagem(erros.errors);
-            }
-
-            mostrarMensagem([erros.mensagem]);
+            mostrarMensagem(erros && erros.errors ? erros.errors : [erros.mensagem], 'block', 'danger');
         }
     });
 });
@@ -194,4 +192,4 @@ const setup = () => {
 }
 
 /// Execute 
-setup();
+$(document).ready(setup);
