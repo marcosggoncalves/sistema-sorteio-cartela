@@ -19,6 +19,7 @@
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-success">Cadastrar</button>
+                                <button type="button" class="btn btn-warning" id="gerarNumeros">Gerar Números</button>
                             </div>
                         </form>
                     </div>

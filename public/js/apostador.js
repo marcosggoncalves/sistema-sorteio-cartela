@@ -1,7 +1,48 @@
+var inputNumeros = document.getElementById('numeros'), numerosSelecionados = [], minimo = 0, maximo = 0;
+
+const selecionarNUmerosCartela = (i, div) => {
+    const index = numerosSelecionados.indexOf(i);
+
+    if (index > -1) {
+        numerosSelecionados.splice(index, 1);
+        div.classList.remove('selecionado');
+        inputNumeros.value = numerosSelecionados.join(', ');
+        return mostrarMensagem(null, 'none');
+    }
+
+    if (numerosSelecionados.length == 6) {
+        return mostrarMensagem(["Você já selecionou os 6 números da sorte!"]);
+    }
+
+    numerosSelecionados.push(i);
+
+    div.classList.add('selecionado');
+
+    inputNumeros.value = numerosSelecionados.join(', ');
+}
+
+const gerarNumerosCartelaAleatorio = () => {
+    const div = document.getElementsByClassName('cartela-numero');
+
+    if(numerosSelecionados.length > 0){
+        numerosSelecionados.map(item=>{
+            div[item].classList.remove('selecionado');
+        });
+
+        numerosSelecionados = [];
+    }
+
+    let numeros = [];
+
+    for (let index = 0; index < 6; index++) {
+        numeros[index] = (Math.floor(Math.random() * (maximo - minimo + 1)) + minimo);
+    }
+
+    numeros.map(numero => selecionarNUmerosCartela(numero, div[numero]));
+}
+
 const criarCartela = (min, max) => {
     const container = document.getElementById('cartela');
-    const inputNumeros = document.getElementById('numeros');
-    const numerosSelecionados = [];
 
     if (min < 1 || min > 5) {
         return console.log('Mínimo 1 e máximo 5');
@@ -10,6 +51,9 @@ const criarCartela = (min, max) => {
     if (max < 60 || max > 80) {
         return console.log('Mínimo 60 e máximo 80');
     }
+
+    minimo = min;
+    maximo = max;
 
     for (let i = min; i <= max; i++) {
         container.innerHTML = '';
@@ -21,32 +65,14 @@ const criarCartela = (min, max) => {
             const divTexto = document.createTextNode(i);
             div.appendChild(divTexto);
 
-            div.addEventListener('click', () => {
-                const index = numerosSelecionados.indexOf(i);
-
-                if (index > -1) {
-                    numerosSelecionados.splice(index, 1);
-                    div.classList.remove('selecionado');
-                    inputNumeros.value = numerosSelecionados.join(', ');
-                    mostrarMensagem(null, 'none');
-                    return;
-                }
-
-                if (numerosSelecionados.length == 6) {
-                    return mostrarMensagem(["Você já selecionou os 6 números da sorte!"]);
-                }
-
-                numerosSelecionados.push(i);
-                div.classList.add('selecionado');
-                inputNumeros.value = numerosSelecionados.join(', ');
-            });
+            div.addEventListener('click', () => selecionarNUmerosCartela(i, div));
 
             container.appendChild(div);
         }
     }
 }
 
-const criarTabeApostadores = (data) => {
+const criarTabelaApostadores = (data) => {
     const table = document.getElementById('apostadores');
 
     table.innerHTML = '';
@@ -74,7 +100,7 @@ const criarTabeApostadores = (data) => {
         iconElement.setAttribute('class', 'fa fa-trash');
         tdIconeExcluir.appendChild(iconElement);
 
-        tdIconeExcluir.addEventListener('click', () => deleteApostador(apostador.id));
+        tdIconeExcluir.addEventListener('click', () => excluirApostador(apostador.id));
 
         tr.appendChild(tdNome);
         tr.appendChild(tdCartelaId);
@@ -85,7 +111,7 @@ const criarTabeApostadores = (data) => {
     });
 }
 
-const deleteApostador = (id) => {
+const excluirApostador = (id) => {
     Swal.fire({
         title: `Excluir cadastro!`,
         text: `Deseja excluir o cadastro do apostador?`,
@@ -118,51 +144,52 @@ const carregarApostadores = () => {
             url: getHost() + '/listagem',
             type: 'GET',
             success: function (data) {
-                criarTabeApostadores(data)
+                criarTabelaApostadores(data)
             },
             error: function (data) { },
         });
     });
 }
 
-$(document).ready(function () {
-    $('#apostador').on('submit', function (event) {
-        event.preventDefault();
+$('#gerarNumeros').click(() => gerarNumerosCartelaAleatorio());
 
-        let nome = document.getElementById('nome').value
-        let numeros = document.getElementById('numeros').value;
+$('#apostador').on('submit', function (event) {
+    event.preventDefault();
 
-        numeros = numeros.split(',').map(numero => numero.trim()).filter(numero => numero !== '')
+    let nome = document.getElementById('nome').value
+    let numeros = document.getElementById('numeros').value;
 
-        $.ajax({
-            url: getHost() + '/novo-apostador',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ nome, numeros }),
-            success: (response) => {
-                const { mensagem } = response
+    numeros = numeros.split(',').map(numero => numero.trim()).filter(numero => numero !== '')
 
-                $('#apostador')[0].reset();
+    $.ajax({
+        url: getHost() + '/novo-apostador',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ nome, numeros }),
+        success: (response) => {
+            const { mensagem } = response
 
-                mostrarMensagem([mensagem], 'block', 'success');
+            numerosSelecionados = [];
 
-                setup();
-            }, error: (data) => {
-                const erros = JSON.parse(data.responseText);
+            $('#apostador')[0].reset();
 
-                if (erros && erros.errors) {
-                    return mostrarMensagem(erros.errors);
-                }
+            mostrarMensagem([mensagem], 'block', 'success');
 
-                mostrarMensagem([erros.mensagem]);
+            setup();
+        }, error: (data) => {
+            const erros = JSON.parse(data.responseText);
+
+            if (erros && erros.errors) {
+                return mostrarMensagem(erros.errors);
             }
-        });
+
+            mostrarMensagem([erros.mensagem]);
+        }
     });
 });
 
 const setup = () => {
     criarCartela(1, 80);
-
     carregarApostadores();
 }
 

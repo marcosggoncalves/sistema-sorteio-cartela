@@ -1,6 +1,6 @@
 const tabelaResultados = document.getElementById('table-resultados');
 
-const criarTableRanking = (data) => {
+const criarTabelaRanking = (data) => {
     const table = document.getElementById('ranking');
 
     table.innerHTML = '';
@@ -43,7 +43,7 @@ const criarTableRanking = (data) => {
     });
 }
 
-const criarTablerResultadoSorteio =  (data) => {
+const criarTabelaResultadoSorteio =  (data) => {
     const table = document.getElementById('resultado');
 
     if(data && data.length > 0){
@@ -109,7 +109,7 @@ const carregarRankigApostadores = () => {
             url: getHost() + '/ranking',
             type: 'GET',
             success: function (data) {
-                criarTableRanking(data)
+                criarTabelaRanking(data)
             },
             error: function (data) { },
         });
@@ -141,7 +141,7 @@ $(document).ready(function () {
                 const { numerosSorteados, resultados } = response
 
                 mostrarResultadoSorteioNumeros(numerosSorteados);
-                criarTablerResultadoSorteio(resultados);
+                criarTabelaResultadoSorteio(resultados);
                 mostrarMensagem(null, 'none');
 
             }, error: (data) => {
