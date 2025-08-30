@@ -1,3 +1,5 @@
+const tabelaResultados = document.getElementById('table-resultados');
+
 const criarTableRanking = (data) => {
     const table = document.getElementById('ranking');
 
@@ -43,6 +45,10 @@ const criarTableRanking = (data) => {
 
 const criarTablerResultadoSorteio =  (data) => {
     const table = document.getElementById('resultado');
+
+    if(data && data.length > 0){
+        tabelaResultados.style.display = 'block';
+    }
 
     table.innerHTML = '';
 
@@ -152,6 +158,8 @@ $(document).ready(function () {
 });
 
 const setup = () => {
+    tabelaResultados.style.display = 'none';
+
     carregarRankigApostadores();
 }
 

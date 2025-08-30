@@ -1,14 +1,14 @@
-<nav class="navbar  navbar-expand-lg bg-body-tertiary  bg-dark ">
+<nav class="navbar navbar-expand-lg bg-success" >
   <div class="container">
-    <a class="navbar-brand" href="#"><?= $data['title'] ?></a>
+    <a class="navbar-brand link-light" href="<?=$_ENV['NAME_PASTA'] ?>"><?= $data['title'] ?></a>
  
     <div class="navbar-text" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="<?=$_ENV['NAME_PASTA'] ?>/">Sorteio</a>
+          <a class="nav-link link-light" aria-current="page" href="<?=$_ENV['NAME_PASTA'] ?>/">Sorteio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$_ENV['NAME_PASTA'] ?>/apostadores">Apostadores</a>
+          <a class="nav-link link-light" href="<?=$_ENV['NAME_PASTA'] ?>/apostadores">Apostadores</a>
         </li>
       </ul>
     </div>

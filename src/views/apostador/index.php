@@ -18,7 +18,7 @@
                                 <input type="text" disabled id="numeros" class="form-control" placeholder="Meus números escolhidos" aria-label="Números">
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                                <button type="submit" class="btn btn-success">Cadastrar</button>
                             </div>
                         </form>
                     </div>

@@ -5,9 +5,9 @@
 
 .cartela {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     gap: 5px;
-    padding: 5px;
+    padding: 2px;
 }
 
 .cartela-numero {
@@ -22,23 +22,14 @@
 }
 
 .cartela-numero.selecionado {
-    background-color: #51c96d;
-}
-
-.btn{
-    background-color: #287e4c;
-    color: white;
-}
-
-.btn:hover{
-    background-color: #156929;
-    color: white;
+    background-color: #767474;
 }
 
 .titulo h1{
     font-size: 1.2rem;
     line-height: 2rem;
-    font-weight: bold;
+    font-weight: 500;
+    text-transform: uppercase;
 }
 
 #numeros_sorteados{

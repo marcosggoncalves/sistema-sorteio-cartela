@@ -86,15 +86,29 @@ const criarTabeApostadores = (data) => {
 }
 
 const deleteApostador = (id) => {
-    $.ajax({
-        url: getHost() + '/deletar-apostador?id=' + id,
-        type: 'DELETE',
-        success: (response) => {
-            const { mensagem } = response
-            mostrarMensagem([mensagem], 'block', 'success');
-            carregarApostadores();
-        },
-        error: (data) => mostrarMensagem([data.toString()])
+    Swal.fire({
+        title: `Excluir cadastro!`,
+        text: `Deseja excluir o cadastro do apostador?`,
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#287e4c",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: `Sim, pode excluir`,
+        reverseButtons: true,
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: getHost() + '/deletar-apostador?id=' + id,
+                type: 'DELETE',
+                success: (response) => {
+                    const { mensagem } = response
+                    mostrarMensagem([mensagem], 'block', 'success');
+                    carregarApostadores();
+                },
+                error: (data) => mostrarMensagem([data.toString()])
+            });
+        }
     });
 }
 
@@ -119,20 +133,19 @@ $(document).ready(function () {
         let numeros = document.getElementById('numeros').value;
 
         numeros = numeros.split(',').map(numero => numero.trim()).filter(numero => numero !== '')
-       
 
         $.ajax({
             url: getHost() + '/novo-apostador',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify( { nome, numeros}),
-            success:  (response) =>{
+            data: JSON.stringify({ nome, numeros }),
+            success: (response) => {
                 const { mensagem } = response
 
                 $('#apostador')[0].reset();
 
                 mostrarMensagem([mensagem], 'block', 'success');
-                
+
                 setup();
             }, error: (data) => {
                 const erros = JSON.parse(data.responseText);

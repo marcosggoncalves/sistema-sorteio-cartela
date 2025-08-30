@@ -24,7 +24,7 @@
                                 <input type="number" id="final" class="form-control" placeholder="Número final" min="1" aria-label="Número final">
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Realizar Sorteio</button>
+                                <button type="submit" class="btn btn-success">Realizar Sorteio</button>
                             </div>
                         </form>
                     </div>
@@ -36,7 +36,7 @@
                             Sem Ordenação: <div class="cartela" id="numeros_sem_ordenado"></div>
                             Ordenados: <div class="cartela" id="numeros_ordenado"></div>
                         </div>
-                        <div>
+                        <div id="table-resultados">
                             <div class="titulo">
                                 <h1>Resultados</h1>
                             </div>

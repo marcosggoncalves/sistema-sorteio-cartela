@@ -60,7 +60,7 @@ class ApostadorController
 
     // Exemplo Request API    
     // {
-    //     "nome":"Libis da Silva1",
+    //     "nome":"Marcos Lopes",
     //     "numeros":[1,2,34,55,67,5]
     // }
     public function create()
