@@ -114,40 +114,38 @@ const carregarRankigApostadores = () => {
     });
 }
 
-$(document).ready(function () {
-    $('#sortear').on('submit', function (event) {
-        event.preventDefault();
+$('#sortear').on('submit', function (event) {
+    event.preventDefault();
 
-        const nome = $('nome').val();
-        const data = $('data').val();
-        const inicial = $('inicial').val();
-        const final = $('final').val();
+    const nome = $('#nome').val();
+    const data = $('#data').val();
+    const inicial = $('#inicial').val();
+    const final = $('#final').val();
 
-        const body = {
-            nome: nome,
-            data: data,
-            inicial: parseInt(inicial),
-            final: parseInt(final)
-        };
+    const body = {
+        nome: nome,
+        data: data,
+        inicial: parseInt(inicial),
+        final: parseInt(final)
+    };
 
-        $.ajax({
-            url: getHost() + '/sortear',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(body),
-            success: (response) => {
-                const { numerosSorteados, resultados } = response
+    $.ajax({
+        url: getHost() + '/sortear',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(body),
+        success: (response) => {
+            const { numerosSorteados, resultados } = response
 
-                mostrarResultadoSorteioNumeros(numerosSorteados);
-                criarTabelaResultadoSorteio(resultados);
-                mostrarMensagem(null, 'none');
+            mostrarResultadoSorteioNumeros(numerosSorteados);
+            criarTabelaResultadoSorteio(resultados);
+            mostrarMensagem(null, 'none');
 
-            }, error: (data) => {
-                const erros = JSON.parse(data.responseText);
+        }, error: (data) => {
+            const erros = JSON.parse(data.responseText);
 
-                mostrarMensagem(erros && erros.errors ? erros.errors : [erros.mensagem],  'block', 'danger');
-            }
-        });
+            mostrarMensagem(erros && erros.errors ? erros.errors : [erros.mensagem], 'block', 'danger');
+        }
     });
 });
 
